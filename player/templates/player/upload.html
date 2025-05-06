@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Music Uploader</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            background: black;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(2px);
+        }
+
+        .container {
+            background-color: rgba(0, 0, 0, 0.9);
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 2px 3px 100px 9px rgba(255, 0, 230, 0.473);
+            width: 400px;
+            text-align: center;
+            color: white;
+        }
+
+        h1, h2 {
+            color: white;
+            margin-bottom: 20px;
+        }
+
+        form input[type="text"],
+        form input[type="file"] {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0;
+            border-radius: 8px;
+            border: none;
+        }
+
+        form button {
+            background-color: darkgreen;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        #song-list {
+            margin-top: 20px;
+            text-align: left;
+        }
+
+        .song {
+            background-color: #222;
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .song:hover {
+            background-color: #444;
+        }
+
+        audio {
+            width: 100%;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Upload a New Song</h1>
+        <form action="/api/songs" method="POST" enctype="multipart/form-data">
+            <input type="text" name="title" placeholder="Title" required><br>
+            <input type="text" name="artist" placeholder="Artist" required><br>
+            <input type="text" name="duration" placeholder="Duration (e.g., 3:45)" required><br>
+            <input type="file" name="file" required><br>
+            <button type="submit">Upload</button>
+        </form>
+
+        <h2>Uploaded Songs</h2>
+        <audio id="audio-player" controls></audio>
+        <div id="song-list">
+            {% for song in songs %}
+                <div class="song" data-filename="{{ song.filename }}">
+                    {{ song.title }} - {{ song.artist }}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <script>
+        const audioPlayer = document.getElementById("audio-player");
+
+        document.querySelectorAll(".song").forEach(el => {
+            el.addEventListener("click", () => {
+                const filename = el.getAttribute("data-filename");
+                audioPlayer.src = `/music/${filename}`;
+                audioPlayer.play();
+            });
+        });
+    </script>
+</body>
+</html>

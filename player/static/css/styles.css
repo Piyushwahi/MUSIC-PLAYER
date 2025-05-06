@@ -1,0 +1,255 @@
+/* Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Body and Background */
+body, html {
+    height: 100%;
+    overflow: hidden;
+    font-family: 'Arial', sans-serif;
+    /* background: rgb(0, 0, 0); */
+    /* background-color: black; */
+}
+
+.background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+}
+
+/* Navigation Bar */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px 50px;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.6);
+
+}
+
+.logo {
+    font-size: 2rem;
+    background: white;
+    background-color: rgba(243, 232, 232, 0.768);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.menu {
+    list-style: none;
+    display: flex;
+    gap: 30px;
+    
+}
+
+.menu li a {
+    color: #f8fcf2;
+    text-decoration: none;
+    transition: 0.4s;
+    
+}
+
+.menu li a:hover {
+    transform: scale(1.1);
+    color: #f3f7a8;
+}
+
+/* Main Content */
+.mainarea {
+    margin: 10px auto;
+    text-align: center;
+    color: rgb(186, 246, 226);
+}
+
+h2 {
+    margin-bottom: 20px;
+    font-size: 2rem;
+}
+
+/* Form Container */
+.form-container {
+    max-width: 400px;
+    margin: 100px auto;
+    background: rgba(0, 0, 0, 0.8);
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 2px 3px 100px 9px rgba(255, 0, 230, 0.4);
+    text-align: center;
+}
+
+.form-container input {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 10px;
+    border: none;
+}
+
+.btn1 {
+    padding: 12px 30px;
+    border: none;
+    background: rgb(2, 76, 2);
+    color: white;
+    border-radius: 20px;
+    transition: 0.4s;
+    cursor: pointer;
+}
+
+.btn1:hover {
+    transform: scale(1.1);
+    background: rgb(2,76,2);
+}
+.fa-music {
+    color: #ffcc00;
+}
+.search-bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background-color: #333;
+    padding: 5px 5px;
+    border-radius: 20px;
+    box-shadow: 2px 3px 100px 3px whitesmoke;
+}
+
+.search-bar input {
+    background: none;
+    border: none;
+    color: white;
+    padding: 5px;
+    font-size: 13px;
+    outline: none;
+    width: 200px;
+}
+
+.search-bar button {
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+}
+
+.search-bar button:hover {
+    color: #ffcc00;
+}
+.left-panel {
+    width: 300px;
+   
+    /* background : radial-gradient( circle farthest-corner at 96.1% 7.2%,  rgb(2, 90, 30) 0%, rgba(19,19,19,1) 100.2% ); */
+    background-color: rgba(37, 32, 32, 0.514) ;
+    padding: 20px;
+    border-radius: 25px;
+    margin-top: 60px;
+    margin-right: 20px;
+    max-height: 700px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #ffcc00 transparent;
+    box-shadow: 2px 3px 110px 4px rgba(241, 230, 230, 0.8);
+}
+
+.left-panel::-webkit-scrollbar {
+    width: 8px;
+}
+
+.left-panel::-webkit-scrollbar-thumb {
+    background-color: #ffcc00;
+    border-radius: 10px;
+}
+
+
+
+.song-item:hover {
+    background-color: #555;
+    transform: scale(1.02);
+}
+.song-img {
+    width: 50px;
+    height: 50px;
+    border-radius: 8px;
+    object-fit: cover;
+}
+
+.song-details {
+    flex-grow: 1;
+    color: #ffcc00;
+    font-size: 16px;
+}
+
+.song-item {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    background-color: rgba(245, 245, 245, 0.271);
+    padding: 7px;
+    border-radius: 25px;
+    margin-bottom: 15px;
+    transition: background-color 0.3s;
+}
+
+.song-item:hover {
+    background-color: #5555554c;
+}
+.form-container h2{
+    color: #dcece0;
+}
+
+.song-icon {
+    font-size: 30px;
+    color: #ffcc00;
+}
+
+.song-img {
+    width: 50px;
+    height: 50px;
+    border-radius: 8px;
+    object-fit: cover;
+}
+
+.song-details {
+    flex-grow: 1;
+}
+.right-panel {
+    width: 50%;
+    /* background-color: #222; */
+    padding: 20px;
+    border-radius: 10px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .navbar {
+        flex-direction: column;
+    }
+
+    .menu {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .form-container {
+        width: 90%;
+    }
+}
+
+.toast {
+    color: #fff;
+    padding: 10px 20px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    animation: slideDown 0.5s ease;
+}
+.toast.error { background-color: #e74c3c; }
+.toast.success { background-color: #2ecc71; }
+
+@keyframes slideDown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+

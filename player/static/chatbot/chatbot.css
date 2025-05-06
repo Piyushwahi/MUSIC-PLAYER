@@ -1,0 +1,84 @@
+#chat-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 999;
+}
+
+#chat-avatar img {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.chat-notify {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background: red;
+    color: white;
+    font-size: 14px;
+    padding: 2px 6px;
+    border-radius: 50%;
+    font-weight: bold;
+}
+
+#chat-messages {
+    position: fixed;
+    bottom: 90px;
+    right: 20px;
+    width: 280px;
+    max-height: 300px;
+    overflow-y: auto;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 15px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    padding: 10px;
+}
+
+.bot-message, .user-message {
+    margin: 5px 0;
+    padding: 10px;
+    border-radius: 12px;
+    max-width: 80%;
+}
+
+.bot-message {
+    background: #f1f1f1;
+    text-align: left;
+}
+
+.user-message {
+    background: #cef5ff;
+    align-self: flex-end;
+    text-align: right;
+}
+
+#chat-input-container {
+    position: fixed;
+    bottom: 20px;
+    right: 90px;
+    display: flex;
+    gap: 5px;
+}
+
+#chat-input {
+    width: 180px;
+    padding: 8px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+}
+
+#send-btn {
+    padding: 8px 10px;
+    border-radius: 8px;
+    background: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+.hidden {
+    display: none;
+}

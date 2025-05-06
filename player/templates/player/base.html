@@ -1,0 +1,84 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Music Player{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+
+    <!-- Content Block for Other Pages -->
+    {% block content %}{% endblock %}
+
+    <!-- Persistent Music Player -->
+    <div class="bottom-player">
+        <div class="disk" id="music-disk"></div>
+        <button onclick="togglePlayPause()" class="play-btn">
+            <i id="play-icon" class="fa fa-play"></i>
+        </button>
+        <span id="song-title">No song playing</span>
+    </div>
+
+    <audio id="audio-player"></audio>
+
+    <script>
+        let audioPlayer = document.getElementById("audio-player");
+        let playIcon = document.getElementById("play-icon");
+        let songTitle = document.getElementById("song-title");
+
+        let lastSong = localStorage.getItem("currentSong");
+        let lastTime = localStorage.getItem("currentTime");
+        let isPlaying = localStorage.getItem("isPlaying") === "true";
+
+        if (lastSong) {
+            audioPlayer.src = lastSong;
+            songTitle.textContent = "Playing: " + lastSong.split('/').pop();
+            audioPlayer.currentTime = lastTime ? parseFloat(lastTime) : 0;
+            if (isPlaying) {
+                audioPlayer.play();
+                playIcon.classList.replace("fa-play", "fa-pause");
+            }
+        }
+
+        function playSong(songPath) {
+            if (!songPath.startsWith("http")) {
+                songPath = window.location.origin + songPath;
+            }
+
+            if (audioPlayer.src !== songPath) {
+                audioPlayer.src = songPath;
+                localStorage.setItem("currentSong", songPath);
+            }
+
+            audioPlayer.play().then(() => {
+                playIcon.classList.replace("fa-play", "fa-pause");
+                songTitle.textContent = "Playing: " + songPath.split('/').pop();
+                localStorage.setItem("isPlaying", "true");
+            }).catch(error => {
+                console.error("Error playing audio:", error);
+            });
+        }
+
+        function togglePlayPause() {
+            if (audioPlayer.paused) {
+                audioPlayer.play();
+                playIcon.classList.replace("fa-play", "fa-pause");
+                localStorage.setItem("isPlaying", "true");
+            } else {
+                audioPlayer.pause();
+                playIcon.classList.replace("fa-pause", "fa-play");
+                localStorage.setItem("isPlaying", "false");
+            }
+        }
+
+        window.addEventListener("beforeunload", () => {
+            localStorage.setItem("currentTime", audioPlayer.currentTime);
+        });
+    </script>
+
+</body>
+</html>

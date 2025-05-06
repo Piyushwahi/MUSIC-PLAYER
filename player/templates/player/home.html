@@ -1,0 +1,339 @@
+<!-- <!DOCTYPE html>
+<html>
+<head>
+    <title>Music Player</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+        .spline-background {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+    <iframe class="spline-background" src="https://your-spline-link"></iframe>
+    <h1>Welcome to Music Player</h1>
+    <a href="{% url 'playlist' %}">Go to Playlist</a>
+
+</body>
+</html> -->
+    {% load static %}
+
+    <!DOCTYPE html> 
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Music Player - Home</title>
+        <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+        <script type="module" src="https://unpkg.com/@splinetool/viewer@1.9.82/build/spline-viewer.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        <style>
+            .logo {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                font-size: 24px;
+                color: white;
+            }
+
+            .fa-music {
+                color: #ffcc00;
+            }
+
+            .left-panel {
+                position: fixed;
+                left: 0;
+                top: 50px;
+                width: 250px;
+                height: 470px;
+                color: white;
+                overflow-y: auto;
+                scrollbar-width: thin;
+                padding: 10px;
+            }
+
+            .song-item:hover {
+                background-color: #333;
+                cursor: pointer;
+            }
+
+            .bottom-player {
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                width: 100%;
+                background: transparent;
+                padding: 15px;
+                color: white;
+                display: flex;
+                align-items: center;
+                justify-content: end;
+                box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.3);
+            }
+            
+            .play-btn {
+                margin: 0 15px;
+                font-size: 28px;
+                color: #ffcc00;
+            }
+
+            .disk {
+                width: 60px;
+                height: 60px;
+                border-radius: 50%;
+                background: url("{% static 'images/diskk.png' %}") no-repeat center;
+                background-size: cover;
+                animation: spin 3s linear infinite;
+                transition: transform 0.3s ease;
+            }
+
+            .black-box {
+                height: 50px;
+                width: 300px;
+                justify-self: end;
+                margin-left: 130px;
+                background-color: rgb(0, 0, 0);
+            }
+            
+            @keyframes spin {
+                from { transform: rotate(0deg); }
+                to { transform: rotate(360deg); }
+            }
+
+            .paused {
+                animation-play-state: paused;
+            }
+        </style>
+    </head>
+    <body>
+        <spline-viewer class="background" url="https://prod.spline.design/3WpOwc5-BFUeeCSt/scene.splinecode"></spline-viewer>
+        <nav class="navbar">
+            <h1 class="logo"><i class="fa fa-music"></i> Music Player</h1>
+            <ul class="menu">   
+                <li><a href="{% url 'home' %}">Home</a></li>
+                <li><a href="{% url 'playlist' %}">Playlist</a></li>
+            
+                {% if user.is_authenticated %}
+                    <li>
+                        <form action="{% url 'logout' %}" method="post" style="display:inline;">
+                            {% csrf_token %}
+                            <button type="submit" style="background:none; border:none; color:rgb(249, 249, 254); cursor:pointer; font: inherit;">
+                                Logout
+                            </button>
+                        </form>
+                    </li>
+                {% else %}
+                    <li><a href="{% url 'login' %}">Login</a></li>
+                    <li><a href="{% url 'signup' %}">Signup</a></li>
+                {% endif %}
+            </ul>
+            
+            
+            <div class="search-bar">
+                <input type="text" placeholder="Search for music..." id="search-input" onkeyup="searchMusic()">
+                <button onclick="searchMusic()"><i class="fa fa-search"></i></button>
+            </div>
+        </nav>
+        
+       <!-- inside song-list -->
+<div class="left-panel" id="song-list">
+    <h3 style="margin-bottom: 10px;">Famous Songs</h3>
+
+    <!-- 🔒 Existing hardcoded songs - left untouched -->
+    <div class="song-item" onclick="playSong('{% static 'music/song1.mp3' %}')">Blinding Light</div>
+    <div class="song-item" onclick="playSong('{% static 'music/DONALI.mp3' %}')">DONALI</div>
+    <div class="song-item" onclick="playSong('{% static 'music/Badnam.mp3' %}')">Badnam</div>
+    <div class="song-item" onclick="playSong('{% static 'music/Red Alert.mp3' %}')">Red Alert</div>
+    <div class="song-item" onclick="playSong('{% static 'music/Wavy .mp3' %}')">Wavy</div>
+    <div class="song-item" onclick="playSong('{% static 'music/I Really Mean It.mp3' %}')">I Really Mean It</div>
+    <div class="song-item" onclick="playSong('{% static 'music/song2.mp3' %}')">DEVIL</div>
+    <div class="song-item" onclick="playSong('{% static 'music/song3.mp3' %}')">SO High</div>
+    <div class="song-item" onclick="playSong('{% static 'music/song5.mp3' %}')">A-Thousand-Years</div>
+    <div class="song-item" onclick="playSong('{% static 'music/summertime-sadness.mp3' %}')">summertime-sadness</div>
+    <div class="song-item" onclick="playSong('{% static 'music/song7.mp3' %}')">Girl in red we fell in love </div>
+    <div class="song-item" onclick="playSong('{% static 'music/A10.mp3' %}')">Avicii</div>
+    <div class="song-item" onclick="playSong('{% static 'music/venom.mp3' %}')">Venom</div>
+    <div class="song-item" onclick="playSong('{% static 'music/song8.mp3' %}')">Spirit</div>
+    <div class="song-item" onclick="playSong('{% static 'music/memories.mp3' %}')">Memories Bring Back</div>
+    <div class="song-item" onclick="playSong('{% static 'music/Red Alert.mp3' %}')">Red Alert</div>
+    {% for song in songs %}
+    <div class="song-item" onclick="playSong('{{ song.audio_file.url }}')">
+        {{ song.title }} - {{ song.artist }}
+    </div>
+{% endfor %}
+  
+    <!-- ✅ ADDED: container for fetched songs -->
+    <div id="dynamic-songs"></div>
+    
+</div>
+
+
+        <!-- Save this as templates/includes/player.html -->
+    <div class="bottom-player">
+        <div class="disk" id="music-disk"></div>
+        <button onclick="togglePlayPause()" class="play-btn">
+            <i id="play-icon" class="fa fa-play"></i>
+        </button>
+        <span id="song-title">No song playing</span>
+        <div class="black-box"></div>
+    </div>
+    <audio id="audio-player"></audio>
+   <!-- ✅ Add this inside your <script> tag at the end -->
+<script>
+    let audioPlayer = document.getElementById("audio-player");
+    let playIcon = document.getElementById("play-icon");
+    let songTitle = document.getElementById("song-title");
+    let musicDisk = document.getElementById("music-disk");
+
+    let lastSong = localStorage.getItem("currentSong");
+    let lastTime = localStorage.getItem("currentTime");
+    let isPlaying = localStorage.getItem("isPlaying") === "true";
+
+    if (lastSong) {
+        audioPlayer.src = lastSong;
+        songTitle.textContent = "Playing: " + lastSong.split('/').pop();
+        audioPlayer.currentTime = lastTime ? parseFloat(lastTime) : 0;
+        if (isPlaying) {
+            audioPlayer.play();
+            playIcon.classList.replace("fa-play", "fa-pause");
+        }
+    }
+
+    function playSong(songPath) {
+        if (!songPath.startsWith("http")) {
+            songPath = window.location.origin + songPath;
+        }
+
+        if (audioPlayer.src !== songPath) {
+            audioPlayer.src = songPath;
+            localStorage.setItem("currentSong", songPath);
+        }
+
+        audioPlayer.play().then(() => {
+            playIcon.classList.replace("fa-play", "fa-pause");
+            songTitle.textContent = "Playing: " + songPath.split('/').pop();
+            musicDisk.classList.remove("paused");
+            localStorage.setItem("isPlaying", "true");
+        }).catch(error => {
+            console.error("Error playing audio:", error);
+        });
+    }
+
+    function togglePlayPause() {
+        if (audioPlayer.paused) {
+            audioPlayer.play();
+            playIcon.classList.replace("fa-play", "fa-pause");
+            musicDisk.classList.remove("paused");
+            localStorage.setItem("isPlaying", "true");
+        } else {
+            audioPlayer.pause();
+            playIcon.classList.replace("fa-pause", "fa-play");
+            musicDisk.classList.add("paused");
+            localStorage.setItem("isPlaying", "false");
+        }
+    }
+
+    function searchMusic() {
+        const query = document.getElementById("search-input").value.toLowerCase();
+        const songs = document.querySelectorAll(".song-item");
+        let hasResults = false;
+
+        songs.forEach((song) => {
+            const songName = song.textContent.toLowerCase();
+            if (songName.includes(query)) {
+                song.style.display = "block";
+                hasResults = true;
+            } else {
+                song.style.display = "none";
+            }
+        });
+
+        if (!hasResults) {
+            document.getElementById("dynamic-songs").innerHTML =
+                `<div class="song-item">No songs found</div>`;
+        }
+    }
+
+    window.addEventListener("beforeunload", () => {
+        localStorage.setItem("currentTime", audioPlayer.currentTime);
+    });
+
+    // ✅ FETCH SONGS FROM API
+    async function fetchSongs() {
+    try {
+        const response = await fetch('http://127.0.0.1:5000/api/songs', {
+            headers: {
+                'Accept': 'application/json'
+            }
+        });
+
+        if (!response.ok) throw new Error("HTTP status " + response.status);
+
+        const songs = await response.json();
+        const container = document.getElementById("dynamic-songs");
+        
+        if (!container) {
+            console.error("Could not find dynamic-songs container");
+            return;
+        }
+        
+        container.innerHTML = "";
+
+        if (!Array.isArray(songs)) {
+            console.warn("Unexpected response format", songs);
+            return;
+        }
+
+        songs.forEach(song => {
+            const div = document.createElement("div");
+            div.className = "song-item dynamic";
+            div.textContent = `${song.title} - ${song.artist}`;
+            div.onclick = () => playSong(`{% static 'music/' %}${song.filename}`);
+            container.appendChild(div);
+        });
+    } catch (err) {
+        console.error("Failed to load songs:", err);
+        // Optionally show error to user
+        const container = document.getElementById("dynamic-songs");
+        if (container) {
+            container.innerHTML = `<div class="error">Failed to load songs. Please try again later.</div>`;
+        }
+    }
+}
+
+    // ✅ CALL fetchSongs WHEN PAGE LOADS
+    document.addEventListener("DOMContentLoaded", function () {
+        fetchSongs();
+    });
+
+</script>
+
+
+
+<!-- CHATBOT WIDGET -->
+<div id="chat-container">
+    <div id="chat-messages" class="hidden">
+        <div class="bot-message">Hello! How can I help you today ?</div>
+    </div>
+    <div id="chat-input-container" class="hidden">
+        <input type="text" id="chat-input" placeholder="Ask for Punjabi, English songs..." />
+        <button id="send-btn">Send</button>
+    </div>
+    <div id="chat-avatar">
+        <img src="{% static 'chatbot/bot.png' %}" alt="Chatbot" />
+        <span class="chat-notify">1</span>
+    </div>
+</div>
+
+<link rel="stylesheet" href="{% static 'chatbot/chatbot.css' %}">
+<script src="{% static 'chatbot/chatbot.js' %}"></script>
+
+
+
+    </body>
+    </html>
